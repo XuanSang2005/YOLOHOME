@@ -26,7 +26,7 @@ export function CameraPreview({ isActive, name, room }: { isActive: boolean; nam
           style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
           <img src={cameraImg} className="w-8 h-8 object-contain" style={{ opacity: 0.22 }} />
         </div>
-        <span className="text-[12px] font-medium tracking-wide" style={{ color: 'rgba(255,255,255,0.18)' }}>
+        <span className="text-[14px] font-medium tracking-wide" style={{ color: 'rgba(255,255,255,0.18)' }}>
           {isActive ? 'Live feed · demo mode' : 'Camera offline'}
         </span>
       </div>
@@ -37,28 +37,28 @@ export function CameraPreview({ isActive, name, room }: { isActive: boolean; nam
           <div className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5"
             style={{ background: 'rgba(239,68,68,0.85)', backdropFilter: 'blur(6px)' }}>
             <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-            <span className="text-[10px] font-bold text-white uppercase tracking-widest">Live</span>
+            <span className="text-[12px] font-bold text-white uppercase tracking-widest">Live</span>
           </div>
         ) : (
           <div className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5"
             style={{ background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(6px)' }}>
-            <span className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.35)' }}>Offline</span>
+            <span className="text-[12px] font-semibold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.35)' }}>Offline</span>
           </div>
         )}
         <div className="rounded-lg px-2.5 py-1.5" style={{ background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(6px)' }}>
-          <span className="text-[11px] font-semibold" style={{ color: 'rgba(255,255,255,0.55)' }}>{name ?? 'Camera'}</span>
+          <span className="text-[13px] font-semibold" style={{ color: 'rgba(255,255,255,0.55)' }}>{name ?? 'Camera'}</span>
         </div>
       </div>
 
       {/* Top-right: resolution + motion */}
       <div className="absolute top-5 right-6 flex items-center gap-2">
         <div className="rounded-lg px-2.5 py-1.5" style={{ background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(6px)' }}>
-          <span className="text-[10px] font-semibold" style={{ color: 'rgba(255,255,255,0.40)' }}>1080p</span>
+          <span className="text-[12px] font-semibold" style={{ color: 'rgba(255,255,255,0.40)' }}>1080p</span>
         </div>
         {isActive && (
           <div className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5" style={{ background: 'rgba(16,185,129,0.12)', backdropFilter: 'blur(6px)' }}>
             <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            <span className="text-[10px] font-semibold text-emerald-400">Motion detect ON</span>
+            <span className="text-[12px] font-semibold text-emerald-400">Motion detect ON</span>
           </div>
         )}
       </div>
@@ -67,17 +67,17 @@ export function CameraPreview({ isActive, name, room }: { isActive: boolean; nam
       <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-6 py-4"
         style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.5), transparent)' }}>
         <div className="flex items-center gap-3">
-          <span className="font-mono text-[11px] tabular-nums" style={{ color: 'rgba(255,255,255,0.28)' }}>
+          <span className="font-mono text-[13px] tabular-nums" style={{ color: 'rgba(255,255,255,0.28)' }}>
             {new Date().toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
             {' '}
             {new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}
           </span>
-          <span className="text-[10px]" style={{ color: 'rgba(255,255,255,0.20)' }}>{room ?? 'Front Door'}</span>
+          <span className="text-[12px]" style={{ color: 'rgba(255,255,255,0.20)' }}>{room ?? 'Front Door'}</span>
         </div>
         {isActive && (
           <div className="flex items-center gap-1.5">
             <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-            <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.35)' }}>Rec</span>
+            <span className="text-[12px] font-bold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.35)' }}>Rec</span>
           </div>
         )}
       </div>
