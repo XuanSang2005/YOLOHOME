@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@keyframes float-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-float-up {
+  animation: float-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { transform: scale(1);    opacity: 0.55; }
+  50%       { transform: scale(1.14); opacity: 0.85; }
+}
+.animate-glow-pulse {
+  animation: glow-pulse 2.8s ease-in-out infinite;
+}
+
+/* ── Brightness range slider ── */
+.brightness-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 9999px;
+  outline: none;
+  cursor: pointer;
+  width: 100%;
+}
+.brightness-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.22), 0 0 0 1.5px rgba(0,0,0,0.06);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.brightness-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.25);
+}
+.brightness-slider::-moz-range-thumb {
+  width: 17px;
+  height: 17px;
+  border: none;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.22);
+  cursor: pointer;
+}
+.brightness-slider-dark::-webkit-slider-thumb {
+  background: #e5e3df;
+}
+.brightness-slider-dark::-moz-range-thumb {
+  background: #e5e3df;
+}
