@@ -1,19 +1,15 @@
+import { apiClient } from '../lib/apiClient'
 import type { Device, TemperatureLog } from '../types'
-import { devices, temperatureLogs } from './mockData'
-
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 export async function getTemperatureSensor(): Promise<Device> {
-  await delay(200)
-  return devices.find(d => d.type === 'sensor')!
+  const arr = await apiClient.get<Device[]>('/devices?type=sensor')
+  return arr[0]
 }
 
-export async function getTemperatureLogs(): Promise<TemperatureLog[]> {
-  await delay(200)
-  return temperatureLogs
+export function getTemperatureLogs(): Promise<TemperatureLog[]> {
+  return apiClient.get<TemperatureLog[]>('/temperature/logs')
 }
 
-export async function getCurrentReading(): Promise<TemperatureLog> {
-  await delay(200)
-  return temperatureLogs[0]
+export function getCurrentReading(): Promise<TemperatureLog> {
+  return apiClient.get<TemperatureLog>('/temperature/current')
 }
