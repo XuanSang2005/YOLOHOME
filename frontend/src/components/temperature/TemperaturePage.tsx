@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { getCurrentReading, getTemperatureLogs } from '../../services/temperatureService'
+import { formatTime24h } from '../../utils/formatTime'
 import { useState } from 'react'
 import { TemperatureHero } from './TemperatureHero'
 import { HumidityHero } from './HumidityHero'
@@ -140,7 +141,7 @@ export function TemperaturePage() {
               <div key={log.id} className="grid grid-cols-[1fr_120px_100px_80px] items-center px-7 py-4">
                 <div>
                   <div className="text-[14px] font-semibold text-stone-800 leading-snug">
-                    {time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
+                    {formatTime24h(time)}
                   </div>
                   <div className="text-[11px] text-stone-400 mt-0.5">
                     {time.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}

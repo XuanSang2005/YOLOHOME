@@ -1,7 +1,7 @@
 import { apiClient } from '../lib/apiClient'
 import type { Device, CameraLog } from '../types'
 
-export async function getCamera(): Promise<Device> {
+export async function getCamera(): Promise<Device | undefined> {
   const arr = await apiClient.get<Device[]>('/devices?type=camera')
   return arr[0]
 }

@@ -1,10 +1,13 @@
 import { Controller, Get } from '@nestjs/common'
+import { ApiTags, ApiOperation } from '@nestjs/swagger'
 import { ConfigService } from '@nestjs/config'
 
+@ApiTags('Health')
 @Controller('health')
 export class HealthController {
   constructor(private readonly config: ConfigService) {}
 
+  @ApiOperation({ summary: 'Kiểm tra trạng thái server' })
   @Get()
   check() {
     return {

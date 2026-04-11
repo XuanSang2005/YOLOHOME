@@ -12,10 +12,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateRoomSettingsDto = void 0;
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
+const swagger_1 = require("@nestjs/swagger");
 class UpdateRoomSettingsDto {
 }
 exports.UpdateRoomSettingsDto = UpdateRoomSettingsDto;
 __decorate([
+    (0, swagger_1.ApiPropertyOptional)({ minimum: 0, maximum: 100, example: 80 }),
     (0, class_validator_1.IsOptional)(),
     (0, class_transformer_1.Type)(() => Number),
     (0, class_validator_1.IsInt)(),
@@ -24,6 +26,7 @@ __decorate([
     __metadata("design:type", Number)
 ], UpdateRoomSettingsDto.prototype, "brightness", void 0);
 __decorate([
+    (0, swagger_1.ApiPropertyOptional)({ enum: ['warm', 'neutral', 'cool'], example: 'warm' }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsIn)(['warm', 'neutral', 'cool']),
     __metadata("design:type", String)

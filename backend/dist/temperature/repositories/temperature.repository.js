@@ -58,6 +58,12 @@ let TemperatureRepository = class TemperatureRepository {
     findLatest() {
         return this.model.findOne().sort({ created_at: -1 });
     }
+    createLog(data) {
+        return this.model.create({
+            ...data,
+            created_at: new Date().toISOString(),
+        });
+    }
 };
 exports.TemperatureRepository = TemperatureRepository;
 exports.TemperatureRepository = TemperatureRepository = __decorate([

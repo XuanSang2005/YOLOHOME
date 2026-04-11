@@ -1,7 +1,8 @@
-type LogEntry = { id: number; temperature: number; humidity: number; created_at: string }
+import type { TemperatureLog } from '../../types'
+import { formatTime24h } from '../../utils/formatTime'
 
 export function ClimateChart({ sorted, minTemp, maxTemp }: {
-  sorted: LogEntry[]
+  sorted: TemperatureLog[]
   minTemp: number
   maxTemp: number
 }) {
@@ -75,7 +76,7 @@ export function ClimateChart({ sorted, minTemp, maxTemp }: {
         return (
           <text key={d.id} x={toX(i)} y={H - 8} textAnchor="middle" fontSize="10" fontWeight="500"
             fill="rgb(140 135 130)" fontFamily="system-ui">
-            {new Date(d.created_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
+            {formatTime24h(d.created_at)}
           </text>
         )
       })}

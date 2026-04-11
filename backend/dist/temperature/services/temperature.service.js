@@ -22,6 +22,9 @@ let TemperatureService = class TemperatureService {
     getCurrentReading() {
         return this.repository.findLatest();
     }
+    createLog(dto) {
+        return this.repository.createLog({ device_id: 2, ...dto });
+    }
 };
 exports.TemperatureService = TemperatureService;
 exports.TemperatureService = TemperatureService = __decorate([

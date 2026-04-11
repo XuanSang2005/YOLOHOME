@@ -11,10 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateCommandDto = void 0;
 const class_validator_1 = require("class-validator");
+const swagger_1 = require("@nestjs/swagger");
 class CreateCommandDto {
 }
 exports.CreateCommandDto = CreateCommandDto;
 __decorate([
+    (0, swagger_1.ApiProperty)({ enum: ['on', 'off'], example: 'on' }),
     (0, class_validator_1.IsEnum)(['on', 'off']),
     __metadata("design:type", String)
 ], CreateCommandDto.prototype, "command", void 0);

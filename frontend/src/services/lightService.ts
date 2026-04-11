@@ -9,7 +9,7 @@ export interface RoomSetting {
   color_temp: 'warm' | 'neutral' | 'cool'
 }
 
-export async function getLight(): Promise<Device> {
+export async function getLight(): Promise<Device | undefined> {
   const arr = await apiClient.get<Device[]>('/devices?type=light')
   return arr[0]
 }

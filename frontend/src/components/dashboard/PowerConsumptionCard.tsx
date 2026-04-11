@@ -13,7 +13,7 @@ export function PowerConsumptionCard() {
   const timeEnd   = data?.time_end ?? ''
 
   const BAR_COUNT   = bars.length
-  const maxBar      = 1
+  const maxBar      = BAR_COUNT > 0 ? Math.max(...bars) : 1
   const avgFraction = BAR_COUNT > 0 ? bars.reduce((s, v) => s + v, 0) / BAR_COUNT : 0
   const barW        = BAR_COUNT > 0 ? (W - gap * (BAR_COUNT - 1)) / BAR_COUNT : 8
   const normalY     = H - (avgFraction / maxBar) * H

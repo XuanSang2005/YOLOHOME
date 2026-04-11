@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { getCurrentReading, getTemperatureLogs } from '../../services/temperatureService'
 import type { Metric } from './types'
+import { formatTime24h } from '../../utils/formatTime'
 
 const METRIC_CONFIG: Record<Metric, { label: string; unit: string; defaultMax: number }> = {
   temperature:     { label: 'Temperature', unit: '°C',  defaultMax: 30 },
@@ -73,7 +74,7 @@ export function EnvironmentalCard({ metric }: { metric: Metric }) {
           const i = sorted.indexOf(d)
           return (
             <text key={d.id} x={toX(i)} y={H - 3} textAnchor="middle" fontSize="7" fill="rgb(168 162 158)" fontFamily="system-ui">
-              {new Date(d.created_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
+              {formatTime24h(d.created_at)}
             </text>
           )
         })}

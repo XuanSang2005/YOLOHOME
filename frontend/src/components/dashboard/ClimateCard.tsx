@@ -17,7 +17,7 @@ export function ClimateCard() {
           <path d="M7 17l9.2-9.2M17 17V7H7" />
         </svg>
       </div>
-      <div className="flex items-center gap-3 text-[10px] text-stone-400 mb-2">
+      <div className="flex items-center gap-3 text-xs text-stone-400 mb-2">
         <span className="flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-orange-500 inline-block" />Humidity
         </span>

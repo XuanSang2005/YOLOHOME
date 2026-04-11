@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LightsController = void 0;
 const common_1 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
 const lights_service_1 = require("../services/lights.service");
 const create_command_dto_1 = require("../dto/create-command.dto");
 const room_command_dto_1 = require("../dto/room-command.dto");
@@ -47,12 +48,14 @@ let LightsController = class LightsController {
 };
 exports.LightsController = LightsController;
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Lấy lịch sử lệnh đèn' }),
     (0, common_1.Get)('commands'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], LightsController.prototype, "getCommands", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Gửi lệnh bật/tắt đèn' }),
     (0, common_1.Post)('commands'),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
     (0, response_message_decorator_1.ResponseMessage)('Command sent'),
@@ -62,12 +65,15 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], LightsController.prototype, "sendCommand", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Lấy cài đặt tất cả phòng' }),
     (0, common_1.Get)('rooms'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], LightsController.prototype, "getRoomSettings", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Gửi lệnh bật/tắt đèn theo phòng' }),
+    (0, swagger_1.ApiParam)({ name: 'room', example: 'bedroom', description: 'Tên phòng: bedroom, kitchen, living-room' }),
     (0, common_1.Post)('rooms/:room/command'),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
     (0, response_message_decorator_1.ResponseMessage)('Room command sent'),
@@ -78,6 +84,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], LightsController.prototype, "sendRoomCommand", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Cập nhật cài đặt đèn theo phòng (độ sáng, màu)' }),
+    (0, swagger_1.ApiParam)({ name: 'room', example: 'bedroom', description: 'Tên phòng: bedroom, kitchen, living-room' }),
     (0, common_1.Patch)('rooms/:room/settings'),
     (0, response_message_decorator_1.ResponseMessage)('Settings updated'),
     __param(0, (0, common_1.Param)('room')),
@@ -87,6 +95,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], LightsController.prototype, "updateRoomSettings", null);
 exports.LightsController = LightsController = __decorate([
+    (0, swagger_1.ApiTags)('Lights'),
     (0, common_1.Controller)('lights'),
     __metadata("design:paramtypes", [lights_service_1.LightsService])
 ], LightsController);

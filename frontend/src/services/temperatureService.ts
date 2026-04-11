@@ -1,7 +1,7 @@
 import { apiClient } from '../lib/apiClient'
 import type { Device, TemperatureLog } from '../types'
 
-export async function getTemperatureSensor(): Promise<Device> {
+export async function getTemperatureSensor(): Promise<Device | undefined> {
   const arr = await apiClient.get<Device[]>('/devices?type=sensor')
   return arr[0]
 }

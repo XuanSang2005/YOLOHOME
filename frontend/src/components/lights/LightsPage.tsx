@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { formatTime24h } from '../../utils/formatTime'
 import {
   getLightCommands,
   getRoomSettings,
@@ -55,6 +56,9 @@ export function LightsPage() {
     onError: (_err, _vars, ctx) => {
       queryClient.setQueryData(['roomSettings'], ctx?.prev)
     },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['roomSettings'] })
+    },
   })
 
   const getRoom = (roomName: string, defaults: { isOn: boolean; brightness: number; colorTemp: ColorTemp }) => {
@@ -90,7 +94,7 @@ export function LightsPage() {
 
   const rooms: (RoomLightCardProps & { key: string })[] = [
     {
-      key: 'bedroom',
+      key: 'Bedroom',
       name: 'Bedroom',
       schedule: '7:00 PM',
       icon: arrowIcon,
@@ -102,7 +106,7 @@ export function LightsPage() {
       onColorTemp:  (v) => setColorTemp('Bedroom', v),
     },
     {
-      key: 'living',
+      key: 'living Room',
       name: 'Living Room',
       schedule: '10:30 PM',
       icon: arrowIcon,
@@ -114,7 +118,7 @@ export function LightsPage() {
       onColorTemp:  (v) => setColorTemp('Living Room', v),
     },
     {
-      key: 'kitchen',
+      key: 'Kitchen',
       name: 'Kitchen',
       schedule: '6:00 PM',
       icon: arrowIcon,
@@ -187,7 +191,7 @@ export function LightsPage() {
         <div className="divide-y divide-stone-100/70">
           {(showAll ? allCommands : allCommands.slice(0, 5)).map((cmd) => {
             const isOn = cmd.command === 'on'
-            const time = new Date(cmd.created_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
+            const time = formatTime24h(cmd.created_at)
             return (
               <div key={cmd.id} className="relative grid grid-cols-[1fr_96px_64px] items-center px-7 py-4">
                 <div className="flex items-center gap-3 min-w-0">
@@ -199,10 +203,10 @@ export function LightsPage() {
                   </div>
                   <div className="min-w-0">
                     <div className="text-[15px] font-semibold text-stone-800 truncate leading-snug">
-                      {(cmd.device_name ?? cmd.device?.name ?? 'Unknown').replace(/\s*Room\s*/i, '').trim()}
+                      {cmd.device_name ?? cmd.device?.name ?? 'Unknown'}
                     </div>
                     <div className="text-[12px] text-stone-400 mt-1 font-medium leading-snug">
-                      {cmd.device_name ?? 'Living Room'}
+                      {time}
                     </div>
                   </div>
                 </div>

@@ -3,6 +3,7 @@ import { TEMP } from './types'
 import type { RoomLightCardProps } from './types'
 import { BrightnessSlider } from './BrightnessSlider'
 import { TemperatureChips } from './TemperatureChips'
+import { STAR_POSITIONS } from '../../constants/decorations'
 
 export function RoomLightCard({
   name, schedule, icon,
@@ -50,7 +51,7 @@ export function RoomLightCard({
       {/* Stars (OFF only) */}
       {dark && (
         <div className="absolute inset-0 pointer-events-none">
-          {[[18,12],[45,28],[72,8],[90,35],[30,55],[60,48],[82,20],[15,70],[50,75],[75,65],[35,85],[65,90],[88,80],[20,40],[55,18]].map(([x,y],i) => (
+          {STAR_POSITIONS.map(([x, y], i) => (
             <div key={i} className="absolute rounded-full bg-white"
               style={{ left:`${x}%`, top:`${y}%`, width: i%3===0?2:1, height: i%3===0?2:1, opacity: 0.25+(i%4)*0.1 }} />
           ))}

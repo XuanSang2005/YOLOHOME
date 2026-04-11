@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PowerController = void 0;
 const common_1 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
 const power_service_1 = require("../services/power.service");
 let PowerController = class PowerController {
     constructor(powerService) {
@@ -22,12 +23,14 @@ let PowerController = class PowerController {
 };
 exports.PowerController = PowerController;
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Lấy lịch sử tiêu thụ điện năng theo tuần' }),
     (0, common_1.Get)('history'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], PowerController.prototype, "getHistory", null);
 exports.PowerController = PowerController = __decorate([
+    (0, swagger_1.ApiTags)('Power'),
     (0, common_1.Controller)('power'),
     __metadata("design:paramtypes", [power_service_1.PowerService])
 ], PowerController);

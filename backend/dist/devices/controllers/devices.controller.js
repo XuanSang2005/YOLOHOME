@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DevicesController = void 0;
 const common_1 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
 const devices_service_1 = require("../services/devices.service");
 const create_device_dto_1 = require("../dto/create-device.dto");
 const response_message_decorator_1 = require("../../common/decorators/response-message.decorator");
@@ -33,6 +34,8 @@ let DevicesController = class DevicesController {
 };
 exports.DevicesController = DevicesController;
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Lấy danh sách thiết bị', description: 'Có thể lọc theo type: light, sensor, camera' }),
+    (0, swagger_1.ApiQuery)({ name: 'type', enum: create_device_dto_1.DeviceType, required: false }),
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)('type')),
     __metadata("design:type", Function),
@@ -40,6 +43,8 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], DevicesController.prototype, "findAll", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Lấy thiết bị theo ID' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'MongoDB ObjectId của thiết bị' }),
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
@@ -47,6 +52,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], DevicesController.prototype, "findOne", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Tạo thiết bị mới' }),
     (0, common_1.Post)(),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
     (0, response_message_decorator_1.ResponseMessage)('Device created'),
@@ -56,6 +62,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], DevicesController.prototype, "create", null);
 exports.DevicesController = DevicesController = __decorate([
+    (0, swagger_1.ApiTags)('Devices'),
     (0, common_1.Controller)('devices'),
     __metadata("design:paramtypes", [devices_service_1.DevicesService])
 ], DevicesController);

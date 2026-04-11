@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CameraController = void 0;
 const common_1 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
 const camera_service_1 = require("../services/camera.service");
 const camera_command_dto_1 = require("../dto/camera-command.dto");
 const response_message_decorator_1 = require("../../common/decorators/response-message.decorator");
@@ -30,12 +31,14 @@ let CameraController = class CameraController {
 };
 exports.CameraController = CameraController;
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Lấy lịch sử hoạt động camera' }),
     (0, common_1.Get)('logs'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], CameraController.prototype, "getLogs", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Gửi lệnh bật/tắt camera' }),
     (0, common_1.Post)('commands'),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
     (0, response_message_decorator_1.ResponseMessage)('Command sent'),
@@ -45,6 +48,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], CameraController.prototype, "sendCommand", null);
 exports.CameraController = CameraController = __decorate([
+    (0, swagger_1.ApiTags)('Camera'),
     (0, common_1.Controller)('camera'),
     __metadata("design:paramtypes", [camera_service_1.CameraService])
 ], CameraController);

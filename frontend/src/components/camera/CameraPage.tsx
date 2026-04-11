@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { getCamera, getCameraLogs, sendCameraCommand } from '../../services/cameraService'
+import { formatTime24h } from '../../utils/formatTime'
 import { useState } from 'react'
 import cameraImg from '../../assets/camera.png'
 import cautionImg from '../../assets/caution-triangle.png'
@@ -134,7 +135,7 @@ export function CameraPage() {
                 </div>
                 <div className="shrink-0 text-right">
                   <div className="font-mono text-[14px] text-stone-400 tabular-nums">
-                    {time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
+                    {formatTime24h(time)}
                   </div>
                   <div className="text-[11px] text-stone-300 mt-0.5">
                     {time.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}

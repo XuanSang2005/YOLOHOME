@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { getLight, sendLightCommand } from '../../services/lightService'
+import { STAR_POSITIONS } from '../../constants/decorations'
 
 export function LightCard() {
   const queryClient = useQueryClient()
@@ -30,7 +31,7 @@ export function LightCard() {
     }`}>
       {!isOn && (
         <div className="absolute inset-0 pointer-events-none">
-          {[[18,12],[45,28],[72,8],[90,35],[30,55],[60,48],[82,20],[15,70],[50,75],[75,65],[35,85],[65,90],[88,80],[20,40],[55,18]].map(([x,y],i) => (
+          {STAR_POSITIONS.map(([x, y], i) => (
             <div key={i} className="absolute rounded-full bg-white"
               style={{ left:`${x}%`, top:`${y}%`, width:i%3===0?2:1, height:i%3===0?2:1, opacity:0.4+(i%4)*0.15 }} />
           ))}
