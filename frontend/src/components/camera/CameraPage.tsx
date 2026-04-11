@@ -56,28 +56,44 @@ export function CameraPage() {
       {/* 4 Insight Tiles */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 animate-float-up" style={{ animationDelay: '120ms' }}>
         <InsightTile
+<<<<<<< HEAD
           icon={<img src={userImg} className="w-5 h-5 object-contain" />}
+=======
+          icon={<img src={userImg} className="w-5 h-5 object-contain" style={{ filter: 'brightness(0) saturate(100%) invert(71%) sepia(10%) saturate(300%) hue-rotate(345deg)' }} />}
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
           iconBg="rgba(168,162,158,0.14)"
           label="Faces Today"
           value={`${faceCount}`}
           sub={lastFace?.face_label ? `Last: ${lastFace.face_label}` : 'No detections yet'}
         />
         <InsightTile
+<<<<<<< HEAD
           icon={<img src={cautionImg} className="w-5 h-5 object-contain" />}
+=======
+          icon={<img src={cautionImg} className="w-5 h-5 object-contain" style={{ filter: 'brightness(0) saturate(100%) invert(27%) sepia(98%) saturate(500%) hue-rotate(330deg) brightness(110%)' }} />}
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
           iconBg="rgba(239,68,68,0.10)"
           label="Unknown Visitors"
           value={`${unknownCount}`}
           sub={unknownCount > 0 ? 'Review activity log' : 'No alerts'}
         />
         <InsightTile
+<<<<<<< HEAD
           icon={<img src={shieldImg} className="w-5 h-5 object-contain" />}
+=======
+          icon={<img src={shieldImg} className="w-5 h-5 object-contain" style={{ filter: 'brightness(0) saturate(100%) invert(59%) sepia(64%) saturate(400%) hue-rotate(120deg)' }} />}
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
           iconBg="rgba(16,185,129,0.10)"
           label="Motion Detect"
           value="Active"
           sub="Monitoring entrance"
         />
         <InsightTile
+<<<<<<< HEAD
           icon={<img src={cameraImg} className="w-5 h-5 object-contain" style={{ opacity: isActive ? 1 : 0.45 }} />}
+=======
+          icon={<img src={cameraImg} className="w-5 h-5 object-contain" style={{ filter: isActive ? 'brightness(0) saturate(100%) invert(59%) sepia(64%) saturate(400%) hue-rotate(120deg)' : 'brightness(0) saturate(100%) invert(71%) sepia(10%) saturate(300%) hue-rotate(345deg)' }} />}
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
           iconBg={isActive ? 'rgba(16,185,129,0.10)' : 'rgba(168,162,158,0.10)'}
           label="Camera Health"
           value={isActive ? 'Online' : 'Offline'}

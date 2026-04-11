@@ -1,6 +1,10 @@
 # YoloHome — Smart AIoT Dashboard
 
+<<<<<<< HEAD
 A smart home monitoring and control dashboard built with React, TypeScript, and TanStack Router.
+=======
+A smart home monitoring and control dashboard built with React, TypeScript, NestJS, and MongoDB.
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
 
 ## Features
 
@@ -11,6 +15,11 @@ A smart home monitoring and control dashboard built with React, TypeScript, and 
 
 ## Tech Stack
 
+<<<<<<< HEAD
+=======
+### Frontend
+
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
 | Layer | Technology |
 |-------|-----------|
 | UI Framework | React 19 + TypeScript |
@@ -22,10 +31,23 @@ A smart home monitoring and control dashboard built with React, TypeScript, and 
 | Linting | ESLint + typescript-eslint |
 | Git Hooks | Husky + lint-staged + commitlint |
 
+<<<<<<< HEAD
+=======
+### Backend
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | NestJS 11 + TypeScript |
+| Database | MongoDB + Mongoose |
+| Validation | class-validator + class-transformer |
+| Config | @nestjs/config |
+
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
 ## Project Structure
 
 ```
 SmartAIOT-YoloHome/
+<<<<<<< HEAD
 └── frontend/
     └── src/
         ├── routes/          # File-based route definitions
@@ -61,6 +83,120 @@ npm run dev       # Start dev server with HMR
 npm run build     # Type check + production build
 npm run lint      # Run ESLint
 npm run preview   # Preview production build
+=======
+├── frontend/
+│   └── src/
+│       ├── routes/          # File-based route definitions
+│       │   ├── index.tsx    # Dashboard
+│       │   ├── lights.tsx
+│       │   ├── temperature.tsx
+│       │   └── camera.tsx
+│       ├── components/      # Feature components
+│       │   ├── dashboard/
+│       │   ├── lights/
+│       │   ├── temperature/
+│       │   ├── camera/
+│       │   └── forms/       # Shared form components
+│       ├── schemas/         # Zod validation schemas
+│       ├── services/        # API service layer
+│       ├── lib/             # apiClient fetch wrapper
+│       └── types/           # Shared TypeScript types
+│
+└── backend/
+    └── src/
+        ├── common/          # Global filters, interceptors, decorators
+        ├── devices/         # Device management module
+        ├── lights/          # Lights control + room settings module
+        ├── temperature/     # Temperature logs module
+        ├── camera/          # Camera logs module
+        ├── power/           # Power consumption module
+        └── health/          # Health check endpoint
+```
+
+## Architecture
+
+```
+Frontend (React + TanStack Query)
+        ↕ HTTP / REST API
+Backend (NestJS)
+  Controller → Service → Repository
+                              ↕
+                          MongoDB
+```
+
+Each backend module follows the **Controller → Service → Repository** pattern:
+- **Controller** — định nghĩa route, validate request
+- **Service** — business logic
+- **Repository** — tương tác với MongoDB qua Mongoose
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 20+
+- MongoDB Community Server (running on `localhost:27017`)
+
+### Backend
+
+```bash
+cd backend
+npm install
+npm run dev        # Starts on http://localhost:3000
+```
+
+Lần đầu chạy, backend tự động seed data vào MongoDB nếu collection còn rỗng.
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev        # Starts on http://localhost:5173
+```
+
+Tạo file `frontend/.env.local`:
+
+```env
+VITE_API_URL=http://localhost:3000
+```
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/health` | Health check |
+| GET | `/devices` | Danh sách thiết bị |
+| POST | `/devices` | Thêm thiết bị mới |
+| GET | `/lights/commands` | Lịch sử lệnh đèn |
+| POST | `/lights/commands` | Gửi lệnh đèn |
+| GET | `/lights/rooms` | Trạng thái 3 phòng |
+| POST | `/lights/rooms/:room/command` | Toggle đèn theo phòng |
+| PATCH | `/lights/rooms/:room/settings` | Cập nhật brightness/colorTemp |
+| GET | `/temperature/logs` | Lịch sử nhiệt độ |
+| GET | `/temperature/current` | Đọc hiện tại |
+| GET | `/camera/logs` | Lịch sử camera |
+| POST | `/camera/commands` | Bật/tắt camera |
+| GET | `/power/history` | Lịch sử tiêu thụ điện |
+
+## Available Scripts
+
+### Frontend
+
+```bash
+npm run dev         # Start dev server with HMR
+npm run build       # Type check + production build
+npm run lint        # Run ESLint
+npm run preview     # Preview production build
+```
+
+### Backend
+
+```bash
+npm run dev         # Start with watch mode
+npm run build       # Compile TypeScript
+npm run start       # Run compiled output
+npm run type-check  # Type check only
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
 ```
 
 ## Git Hooks
@@ -85,11 +221,17 @@ refactor: split temperature components
 Forms use **React Hook Form** + **Zod** for type-safe validation. Schemas live in `src/schemas/`, reusable field components in `src/components/forms/`.
 
 ```ts
+<<<<<<< HEAD
 // Define schema
 const schema = z.object({ name: z.string().min(2) })
 type FormValues = z.infer<typeof schema>
 
 // Use in component
+=======
+const schema = z.object({ name: z.string().min(2) })
+type FormValues = z.infer<typeof schema>
+
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
 const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
   resolver: zodResolver(schema),
   defaultValues: { name: '' },

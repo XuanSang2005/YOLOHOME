@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type { ReactNode } from 'react'
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
@@ -7,6 +8,17 @@ import { getCamera } from '../../services/cameraService'
 import { DeviceModal } from '../forms/DeviceModal'
 import type { DeviceFormValues } from '../../schemas/deviceSchema'
 import type { Device } from '../../types'
+=======
+import { useState, type ReactNode } from 'react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { getLight } from '../../services/lightService'
+import { getTemperatureSensor } from '../../services/temperatureService'
+import { getCamera } from '../../services/cameraService'
+import { apiClient } from '../../lib/apiClient'
+import { DeviceModal } from '../forms/DeviceModal'
+import type { Device } from '../../types'
+import type { DeviceFormValues } from '../../schemas/deviceSchema'
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
 
 const icons: Record<string, ReactNode> = {
   light: (
@@ -27,6 +39,7 @@ const icons: Record<string, ReactNode> = {
   ),
 }
 
+<<<<<<< HEAD
 function formValuesToDevice(data: DeviceFormValues, id: number): Device {
   return {
     id,
@@ -40,10 +53,17 @@ function formValuesToDevice(data: DeviceFormValues, id: number): Device {
 }
 
 export function DevicesCard() {
+=======
+export function DevicesCard() {
+  const [modalOpen, setModalOpen] = useState(false)
+  const queryClient = useQueryClient()
+
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
   const light  = useQuery({ queryKey: ['light'],  queryFn: getLight })
   const sensor = useQuery({ queryKey: ['sensor'], queryFn: getTemperatureSensor })
   const camera = useQuery({ queryKey: ['camera'], queryFn: getCamera })
 
+<<<<<<< HEAD
   const [modalOpen, setModalOpen] = useState(false)
   const [localDevices, setLocalDevices] = useState<Device[]>([])
 
@@ -98,6 +118,55 @@ export function DevicesCard() {
         onClose={() => setModalOpen(false)}
         onSave={handleSave}
       />
+=======
+  const devices = [light.data, sensor.data, camera.data].filter(Boolean) as Device[]
+
+  const addDevice = useMutation({
+    mutationFn: (data: DeviceFormValues) => apiClient.post('/devices', data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['light'] })
+      queryClient.invalidateQueries({ queryKey: ['sensor'] })
+      queryClient.invalidateQueries({ queryKey: ['camera'] })
+    },
+  })
+
+  return (
+    <>
+    <DeviceModal
+      open={modalOpen}
+      onClose={() => setModalOpen(false)}
+      onSave={(data) => addDevice.mutate(data)}
+    />
+    <div className="h-full bg-[#f5f4f0]/60 backdrop-blur-md rounded-3xl p-6 shadow-sm shadow-stone-300/15">
+      <div className="flex items-center justify-between mb-3">
+        <span className="text-[19px] font-semibold text-stone-800">Devices</span>
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] text-stone-400 bg-stone-50 rounded-full px-2 py-0.5">{devices.length}</span>
+          <button
+            onClick={() => setModalOpen(true)}
+            className="w-6 h-6 rounded-full bg-stone-800 text-white flex items-center justify-center text-sm leading-none hover:bg-stone-700 transition-colors"
+          >+</button>
+        </div>
+      </div>
+      <div className="flex flex-col gap-1.5">
+        {devices.map((d) => {
+          const on = d.status === 'on' || d.status === 'active'
+          return (
+            <div key={d.id} className={`flex items-center gap-3 px-4 py-3 rounded-2xl ${on ? 'bg-stone-50' : ''}`}>
+              <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${on ? 'bg-white text-stone-600' : 'bg-stone-100 text-stone-400'}`}>
+                {icons[d.type]}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-[13px] font-semibold text-stone-800 truncate">{d.name}</div>
+                <div className="text-[11px] text-stone-400">{d.room}</div>
+              </div>
+              <span className={`w-1.5 h-1.5 rounded-full ${on ? 'bg-emerald-400' : 'bg-stone-300'}`} />
+            </div>
+          )
+        })}
+      </div>
+    </div>
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
     </>
   )
 }

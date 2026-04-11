@@ -1,5 +1,9 @@
 export interface Device {
+<<<<<<< HEAD
   id: number
+=======
+  id: string
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
   name: string
   type: 'light' | 'sensor' | 'camera'
   room: string
@@ -9,8 +13,14 @@ export interface Device {
 }
 
 export interface DeviceCommand {
+<<<<<<< HEAD
   id: number
   device_id: number
+=======
+  id: string
+  device_id: number
+  device_name?: string
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
   command: string
   executed: boolean
   executed_at: string | null
@@ -19,7 +29,11 @@ export interface DeviceCommand {
 }
 
 export interface TemperatureLog {
+<<<<<<< HEAD
   id: number
+=======
+  id: string
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
   device_id: number
   temperature: number
   humidity: number
@@ -29,7 +43,11 @@ export interface TemperatureLog {
 }
 
 export interface CameraLog {
+<<<<<<< HEAD
   id: number
+=======
+  id: string
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
   user_id: number | null
   device_id: number | null
   event: 'camera_on' | 'camera_off' | 'face_detected'

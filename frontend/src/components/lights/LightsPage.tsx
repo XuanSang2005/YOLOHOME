@@ -1,5 +1,15 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+<<<<<<< HEAD
 import { getLight, getLightCommands, sendLightCommand } from '../../services/lightService'
+=======
+import {
+  getLightCommands,
+  getRoomSettings,
+  sendRoomCommand,
+  updateRoomSettings,
+  type RoomSetting,
+} from '../../services/lightService'
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
 import { useState } from 'react'
 import { RoomLightCard } from './RoomLightCard'
 import type { RoomLightCardProps, ColorTemp } from './types'
@@ -8,6 +18,7 @@ export function LightsPage() {
   const queryClient = useQueryClient()
   const [showAll, setShowAll] = useState(false)
 
+<<<<<<< HEAD
   type LocalCmd = { id: string; command: 'on' | 'off'; created_at: string; device: { name: string } }
   const [localCmds, setLocalCmds] = useState<LocalCmd[]>([])
   const addLocalCmd = (name: string, command: 'on' | 'off') =>
@@ -39,6 +50,71 @@ export function LightsPage() {
     ...localCmds,
     ...(commands.data ?? []),
   ].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+=======
+  const roomSettings = useQuery({ queryKey: ['roomSettings'], queryFn: getRoomSettings })
+  const commands     = useQuery({ queryKey: ['lightCommands'], queryFn: getLightCommands })
+
+  const roomCommandMutation = useMutation({
+    mutationFn: ({ room, command }: { room: string; command: 'on' | 'off' }) =>
+      sendRoomCommand(room, command),
+    onMutate: async ({ room, command }) => {
+      await queryClient.cancelQueries({ queryKey: ['roomSettings'] })
+      const prev = queryClient.getQueryData<RoomSetting[]>(['roomSettings'])
+      queryClient.setQueryData<RoomSetting[]>(['roomSettings'], (old) =>
+        old?.map((s) => s.room === room ? { ...s, is_on: command === 'on' } : s) ?? [],
+      )
+      return { prev }
+    },
+    onError: (_err, _vars, ctx) => {
+      queryClient.setQueryData(['roomSettings'], ctx?.prev)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['roomSettings'] })
+      queryClient.invalidateQueries({ queryKey: ['lightCommands'] })
+    },
+  })
+
+  const roomSettingsMutation = useMutation({
+    mutationFn: ({ room, settings }: { room: string; settings: { brightness?: number; color_temp?: string } }) =>
+      updateRoomSettings(room, settings),
+    onMutate: async ({ room, settings }) => {
+      await queryClient.cancelQueries({ queryKey: ['roomSettings'] })
+      const prev = queryClient.getQueryData<RoomSetting[]>(['roomSettings'])
+      queryClient.setQueryData<RoomSetting[]>(['roomSettings'], (old) =>
+        old?.map((s) => s.room === room ? {
+          ...s,
+          ...(settings.brightness !== undefined ? { brightness: settings.brightness } : {}),
+          ...(settings.color_temp !== undefined ? { color_temp: settings.color_temp as RoomSetting['color_temp'] } : {}),
+        } : s) ?? [],
+      )
+      return { prev }
+    },
+    onError: (_err, _vars, ctx) => {
+      queryClient.setQueryData(['roomSettings'], ctx?.prev)
+    },
+  })
+
+  const getRoom = (roomName: string, defaults: { isOn: boolean; brightness: number; colorTemp: ColorTemp }) => {
+    const r = roomSettings.data?.find((s) => s.room === roomName)
+    if (!r) return defaults
+    return { isOn: r.is_on, brightness: r.brightness, colorTemp: r.color_temp as ColorTemp }
+  }
+
+  const toggle = (room: string) => {
+    const current = roomSettings.data?.find((s) => s.room === room)?.is_on ?? false
+    roomCommandMutation.mutate({ room, command: current ? 'off' : 'on' })
+  }
+
+  const setBrightness = (room: string, brightness: number) =>
+    roomSettingsMutation.mutate({ room, settings: { brightness } })
+
+  const setColorTemp = (room: string, colorTemp: ColorTemp) =>
+    roomSettingsMutation.mutate({ room, settings: { color_temp: colorTemp } })
+
+  const allCommands = [...(commands.data ?? [])].sort(
+    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+  )
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
 
   const arrowIcon = (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -46,24 +122,41 @@ export function LightsPage() {
     </svg>
   )
 
+<<<<<<< HEAD
+=======
+  const bed     = getRoom('Bedroom',     { isOn: false, brightness: 70,  colorTemp: 'warm'    })
+  const living  = getRoom('Living Room', { isOn: true,  brightness: 85,  colorTemp: 'neutral' })
+  const kitchen = getRoom('Kitchen',     { isOn: true,  brightness: 100, colorTemp: 'cool'    })
+
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
   const rooms: (RoomLightCardProps & { key: string })[] = [
     {
       key: 'bedroom',
       name: 'Bedroom',
       schedule: '7:00 PM',
       icon: arrowIcon,
+<<<<<<< HEAD
       isOn: isBedOn,
       brightness: bedBrightness,
       colorTemp: bedTemp,
       onToggle: () => { const next = !isBedOn; setIsBedOn(next); addLocalCmd('Bedroom', next ? 'on' : 'off') },
       onBrightness: setBedBrightness,
       onColorTemp: setBedTemp,
+=======
+      isOn: bed.isOn,
+      brightness: bed.brightness,
+      colorTemp: bed.colorTemp,
+      onToggle:     () => toggle('Bedroom'),
+      onBrightness: (v) => setBrightness('Bedroom', v),
+      onColorTemp:  (v) => setColorTemp('Bedroom', v),
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
     },
     {
       key: 'living',
       name: 'Living Room',
       schedule: '10:30 PM',
       icon: arrowIcon,
+<<<<<<< HEAD
       isOn: isLivingOn,
       brightness: livingBrightness,
       colorTemp: livingTemp,
@@ -74,18 +167,35 @@ export function LightsPage() {
       },
       onBrightness: setLivingBrightness,
       onColorTemp: setLivingTemp,
+=======
+      isOn: living.isOn,
+      brightness: living.brightness,
+      colorTemp: living.colorTemp,
+      onToggle:     () => toggle('Living Room'),
+      onBrightness: (v) => setBrightness('Living Room', v),
+      onColorTemp:  (v) => setColorTemp('Living Room', v),
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
     },
     {
       key: 'kitchen',
       name: 'Kitchen',
       schedule: '6:00 PM',
       icon: arrowIcon,
+<<<<<<< HEAD
       isOn: isKitOn,
       brightness: kitBrightness,
       colorTemp: kitTemp,
       onToggle: () => { const next = !isKitOn; setIsKitOn(next); addLocalCmd('Kitchen', next ? 'on' : 'off') },
       onBrightness: setKitBrightness,
       onColorTemp: setKitTemp,
+=======
+      isOn: kitchen.isOn,
+      brightness: kitchen.brightness,
+      colorTemp: kitchen.colorTemp,
+      onToggle:     () => toggle('Kitchen'),
+      onBrightness: (v) => setBrightness('Kitchen', v),
+      onColorTemp:  (v) => setColorTemp('Kitchen', v),
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
     },
   ]
 
@@ -161,9 +271,17 @@ export function LightsPage() {
                   </div>
                   <div className="min-w-0">
                     <div className="text-[15px] font-semibold text-stone-800 truncate leading-snug">
+<<<<<<< HEAD
                       {(cmd.device?.name ?? 'Unknown').replace(/\s*light\s*/i, '').trim()}
                     </div>
                     <div className="text-[12px] text-stone-400 mt-1 font-medium leading-snug">Living Room</div>
+=======
+                      {(cmd.device_name ?? cmd.device?.name ?? 'Unknown').replace(/\s*Room\s*/i, '').trim()}
+                    </div>
+                    <div className="text-[12px] text-stone-400 mt-1 font-medium leading-snug">
+                      {cmd.device_name ?? 'Living Room'}
+                    </div>
+>>>>>>> 0cfb5800ab41499dd5b546fd19c5441e9822217e
                   </div>
                 </div>
                 <div>
