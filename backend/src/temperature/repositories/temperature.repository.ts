@@ -48,4 +48,11 @@ export class TemperatureRepository implements OnModuleInit {
   findLatest() {
     return this.model.findOne().sort({ created_at: -1 })
   }
+
+  createLog(data: { device_id: number; temperature: number; humidity: number; light_intensity?: number; air_quality?: number }) {
+    return this.model.create({
+      ...data,
+      created_at: new Date().toISOString(),
+    })
+  }
 }
