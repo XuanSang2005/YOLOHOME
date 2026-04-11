@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+//  url      = env("DATABASE_URL")
+}
+
+model Device {
+  id          Int              @id @default(autoincrement())
+  name        String
+  type        String
+  room        String
+  status      String
+  ipAddress   String?          @map("ip_address")
+  lastSeenAt  DateTime?        @map("last_seen_at")
+
+  commands    DeviceCommand[]
+  tempLogs    TemperatureLog[]
+  cameraLogs  CameraLog[]
+
+  @@map("devices")
+}
+
+model DeviceCommand {
+  id         Int       @id @default(autoincrement())
+  deviceId   Int       @map("device_id")
+  command    String
+  executed   Boolean   @default(false)
+  executedAt DateTime? @map("executed_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  device     Device    @relation(fields: [deviceId], references: [id])
+
+  @@map("device_commands")
+}
+
+model TemperatureLog {
+  id             Int       @id @default(autoincrement())
+  deviceId       Int       @map("device_id")
+  temperature    Float
+  humidity       Float
+  lightIntensity Float?    @map("light_intensity")
+  airQuality     Float?    @map("air_quality")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  device         Device    @relation(fields: [deviceId], references: [id])
+
+  @@map("temperature_logs")
+}
+
+model CameraLog {
+  id         Int       @id @default(autoincrement())
+  userId     Int?      @map("user_id")
+  deviceId   Int?      @map("device_id")
+  event      String
+  faceLabel  String?   @map("face_label")
+  note       String?
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  device     Device?   @relation(fields: [deviceId], references: [id])
+
+  @@map("camera_logs")
+}
