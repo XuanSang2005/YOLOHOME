@@ -1,4 +1,5 @@
 import cameraImg from '../../assets/camera.png'
+import Webcam from 'react-webcam' // 1. IMPORT THƯ VIỆN WEBCAM
 
 export function CameraPreview({ isActive, name, room }: { isActive: boolean; name?: string; room?: string }) {
   return (
@@ -10,26 +11,41 @@ export function CameraPreview({ isActive, name, room }: { isActive: boolean; nam
         minHeight: 340,
       }}
     >
+      {/* 2. CẤY WEBCAM VÀO DƯỚI CÙNG ĐỂ NÓ LÀM NỀN */}
+      {isActive && (
+        <Webcam
+          audio={false}
+          mirrored={true} // Lật hình như soi gương nhìn cho thuận mắt
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      )}
+
+      {/* Lớp hiệu ứng tối mờ ở các góc */}
       <div className="absolute inset-0 pointer-events-none"
         style={{ background: 'radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(0,0,0,0.35) 100%)' }} />
 
+      {/* Lớp hiệu ứng nhiễu sóng (Scanlines) sọc sọc */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.025]"
         style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,1) 2px, rgba(255,255,255,1) 3px)' }} />
 
+      {/* Ánh sáng xanh nhè nhẹ tỏa ra từ trên xuống khi bật */}
       {isActive && (
         <div className="absolute inset-0 pointer-events-none"
           style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(16,185,129,0.04) 0%, transparent 60%)' }} />
       )}
 
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-        <div className="w-16 h-16 rounded-full flex items-center justify-center"
-          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
-          <img src={cameraImg} className="w-8 h-8 object-contain" style={{ opacity: 0.22 }} />
+      {/* 3. ẨN ICON CHÍNH GIỮA NẾU CAMERA ĐANG BẬT (ĐỂ KHÔNG CHE MẶT) */}
+      {!isActive && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+          <div className="w-16 h-16 rounded-full flex items-center justify-center"
+            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
+            <img src={cameraImg} className="w-8 h-8 object-contain" style={{ opacity: 0.22 }} />
+          </div>
+          <span className="text-[14px] font-medium tracking-wide" style={{ color: 'rgba(255,255,255,0.18)' }}>
+            Camera offline
+          </span>
         </div>
-        <span className="text-[14px] font-medium tracking-wide" style={{ color: 'rgba(255,255,255,0.18)' }}>
-          {isActive ? 'Live feed · demo mode' : 'Camera offline'}
-        </span>
-      </div>
+      )}
 
       {/* Top-left: LIVE + camera label */}
       <div className="absolute top-5 left-6 flex items-center gap-3">
