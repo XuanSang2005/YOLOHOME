@@ -91,7 +91,7 @@ def on_event_timer_callback_time():
 event_manager.add_timer_event(1000, on_event_timer_callback_time)
 
 display.scroll('YH')
-mqtt.connect_wifi('PHIỀN VL', '22222222')
+mqtt.connect_wifi('iPhone', 'anh12345')
 mqtt.connect_broker(server='mqtt.ohstem.vn', port=1883, username='YoloHome2907', password='')
 
 try:
