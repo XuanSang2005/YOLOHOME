@@ -1,31 +1,110 @@
 from yolobit import *
-from aiot_lcd1602 import LCD1602
-from aiot_dht20 import DHT20
+button_a.on_pressed = None
+button_b.on_pressed = None
+button_a.on_pressed_ab = button_b.on_pressed_ab = -1
+
+from mqtt import *
+from machine import RTC, Pin, SoftI2C
+import ntptime
 import time
+from aiot_lcd1602 import LCD1602
+from event_manager import *
+from aiot_dht20 import DHT20
+from aiot_rgbled import RGBLed
 
-# 1. Khởi tạo thiết bị
-lcd1602 = LCD1602()
-aiot_dht20 = DHT20()
+aiot_lcd1602 = LCD1602()
+event_manager.reset()
 
-# 2. Hiển thị chữ chào mừng lúc mới bật
-lcd1602.clear()
-lcd1602.move_to(0, 0)
-lcd1602.putstr("YoloHome Ready!")
-time.sleep(2)
-lcd1602.clear()
+i2c = SoftI2C(scl=Pin(22), sda=Pin(21))
+aiot_dht20 = DHT20(i2c)
 
-# 3. Vòng lặp chính
+tiny_rgb = RGBLed(pin0.pin, 4)
+
+def on_event_timer_callback_sensor():
+  global RT, RH, LUX
+  try:
+    aiot_dht20.read_dht20()
+    RT = aiot_dht20.dht20_temperature()
+    RH = aiot_dht20.dht20_humidity()
+    LUX = round(translate(pin2.read_analog(), 0, 4095, 0, 100))
+
+    print('RT =', RT, 'RH =', RH, 'LUX =', LUX)
+
+    aiot_lcd1602.move_to(0, 0)
+    aiot_lcd1602.putstr('                ')
+    aiot_lcd1602.move_to(0, 0)
+    aiot_lcd1602.putstr(str(RT))
+
+    aiot_lcd1602.move_to(4, 0)
+    aiot_lcd1602.putstr('*C')
+
+    aiot_lcd1602.move_to(8, 0)
+    aiot_lcd1602.putstr('   ')
+    aiot_lcd1602.move_to(8, 0)
+    aiot_lcd1602.putstr(str(RH))
+
+    aiot_lcd1602.move_to(10, 0)
+    aiot_lcd1602.putstr('%')
+
+    aiot_lcd1602.move_to(13, 0)
+    aiot_lcd1602.putstr('   ')
+    aiot_lcd1602.move_to(13, 0)
+    aiot_lcd1602.putstr(str(LUX))
+
+    if LUX < 30:
+      tiny_rgb.show(0, hex_to_rgb('#0000ff'))
+    elif LUX < 70:
+      tiny_rgb.show(0, hex_to_rgb('#ffff00'))
+    else:
+      tiny_rgb.show(0, hex_to_rgb('#ff0000'))
+
+    mqtt.publish('V1', str(RT))
+    mqtt.publish('V2', str(RH))
+    mqtt.publish('V3', str(LUX))
+
+  except Exception as e:
+    print('Loi sensor/LCD/RGB:', e)
+
+event_manager.add_timer_event(1000, on_event_timer_callback_sensor)
+
+def on_event_timer_callback_time():
+  try:
+    aiot_lcd1602.move_to(0, 1)
+    aiot_lcd1602.putstr(('%0*d' % (2, RTC().datetime()[2])))
+    aiot_lcd1602.move_to(2, 1)
+    aiot_lcd1602.putstr('/')
+    aiot_lcd1602.move_to(3, 1)
+    aiot_lcd1602.putstr(('%0*d' % (2, RTC().datetime()[1])))
+    aiot_lcd1602.move_to(5, 1)
+    aiot_lcd1602.putstr('/')
+    aiot_lcd1602.move_to(6, 1)
+    aiot_lcd1602.putstr(('%0*d' % (2, RTC().datetime()[0])))
+    aiot_lcd1602.move_to(11, 1)
+    aiot_lcd1602.putstr(('%0*d' % (2, RTC().datetime()[4])))
+    aiot_lcd1602.move_to(13, 1)
+    aiot_lcd1602.putstr(':')
+    aiot_lcd1602.move_to(14, 1)
+    aiot_lcd1602.putstr(('%0*d' % (2, RTC().datetime()[5])))
+  except Exception as e:
+    print('Loi time:', e)
+
+event_manager.add_timer_event(1000, on_event_timer_callback_time)
+
+display.scroll('YH')
+mqtt.connect_wifi('PHIỀN VL', '22222222')
+mqtt.connect_broker(server='mqtt.ohstem.vn', port=1883, username='YoloHome2907', password='')
+
+try:
+  ntptime.settime()
+  (year, month, mday, week_of_year, hour, minute, second, milisecond) = RTC().datetime()
+  RTC().init((year, month, mday, week_of_year, hour + 7, minute, second, milisecond))
+except Exception as e:
+  print('Loi NTP:', e)
+
+aiot_lcd1602.clear()
+display.scroll('OK')
+
 while True:
-    # Đọc cảm biến
-    aiot_dht20.read()
-    nhiet_do = aiot_dht20.temperature
-    
-    # In ra màn hình LCD (Ví dụ: Temp: 32.5 C)
-    lcd1602.move_to(0, 0)
-    lcd1602.putstr("Temp: " + str(nhiet_do) + " C")
-    
-    # QUAN TRỌNG NHẤT: Đẩy con số ra cáp USB để máy tính chộp lấy
-    print(nhiet_do)
-    
-    # Nghỉ 3 giây trước khi đo lần tiếp theo
-    time.sleep(3)
+  event_manager.run()
+  mqtt.check_message()
+  time.sleep_ms(100)
