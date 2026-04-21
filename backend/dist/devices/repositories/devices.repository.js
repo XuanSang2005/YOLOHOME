@@ -30,6 +30,7 @@ let DevicesRepository = class DevicesRepository {
                 { name: 'Front Door Webcam', type: 'camera', room: 'Front Door', status: 'active', ip_address: '192.168.1.12', last_seen_at: '2026-04-08T14:30:00' },
                 { name: 'Bedroom Light', type: 'light', room: 'Bedroom', status: 'off', ip_address: '192.168.1.13', last_seen_at: '2026-04-08T14:30:00' },
                 { name: 'Kitchen Light', type: 'light', room: 'Kitchen', status: 'on', ip_address: '192.168.1.14', last_seen_at: '2026-04-08T14:30:00' },
+                { name: 'Front Gate', type: 'gate', room: 'Front Door', status: 'closed', ip_address: '192.168.1.15', last_seen_at: '2026-04-08T14:30:00' },
             ]);
         }
     }
@@ -48,6 +49,9 @@ let DevicesRepository = class DevicesRepository {
             ip_address: dto.ip_address ?? '',
             last_seen_at: new Date().toISOString(),
         });
+    }
+    updateGateStatus(status) {
+        return this.model.findOneAndUpdate({ type: 'gate' }, { status, last_seen_at: new Date().toISOString() }, { new: true });
     }
 };
 exports.DevicesRepository = DevicesRepository;

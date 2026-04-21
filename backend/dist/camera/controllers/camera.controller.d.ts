@@ -1,5 +1,6 @@
 import { CameraService } from '../services/camera.service';
 import { CameraCommandDto } from '../dto/camera-command.dto';
+import { CameraRecognizeDto } from '../dto/camera-recognize.dto';
 export declare class CameraController {
     private readonly cameraService;
     constructor(cameraService: CameraService);
@@ -53,4 +54,8 @@ export declare class CameraController {
     } & Required<{
         _id: import("mongoose").Types.ObjectId;
     }>>;
+    processRecognition(dto: CameraRecognizeDto): Promise<{
+        authorized: 0 | 1;
+        face_label: string;
+    }>;
 }

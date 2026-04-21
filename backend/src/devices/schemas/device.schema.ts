@@ -18,13 +18,13 @@ export class Device {
   @Prop({ required: true })
   name!: string
 
-  @Prop({ required: true, enum: ['light', 'sensor', 'camera'] })
+  @Prop({ required: true, enum: ['light', 'sensor', 'camera', 'gate'] })
   type!: string
 
   @Prop({ required: true })
   room!: string
 
-  @Prop({ required: true, enum: ['on', 'off', 'active', 'inactive'], default: 'off' })
+  @Prop({ required: true, enum: ['on', 'off', 'active', 'inactive', 'open', 'closed'], default: 'off' })
   status!: string
 
   @Prop({ default: '' })

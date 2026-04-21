@@ -12,6 +12,7 @@ export enum DeviceType {
   LIGHT = 'light',
   SENSOR = 'sensor',
   CAMERA = 'camera',
+  GATE = 'gate',
 }
 
 export enum DeviceRoom {

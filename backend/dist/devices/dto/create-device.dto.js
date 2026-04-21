@@ -17,6 +17,7 @@ var DeviceType;
     DeviceType["LIGHT"] = "light";
     DeviceType["SENSOR"] = "sensor";
     DeviceType["CAMERA"] = "camera";
+    DeviceType["GATE"] = "gate";
 })(DeviceType || (exports.DeviceType = DeviceType = {}));
 var DeviceRoom;
 (function (DeviceRoom) {

@@ -36,4 +36,15 @@ export class CameraRepository implements OnModuleInit {
       created_at: new Date().toISOString(),
     })
   }
+
+  async createFaceLog(faceLabel: string, authorized: number) {
+    return this.model.create({
+      user_id: null,
+      device_id: 3,
+      event: 'face_detected',
+      face_label: faceLabel,
+      note: authorized === 1 ? `Access granted: ${faceLabel}` : 'Access denied: Unknown person',
+      created_at: new Date().toISOString(),
+    })
+  }
 }

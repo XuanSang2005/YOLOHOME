@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, HttpCode, HttpStatus } from '@nestjs/commo
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
 import { CameraService } from '../services/camera.service'
 import { CameraCommandDto } from '../dto/camera-command.dto'
+import { CameraRecognizeDto } from '../dto/camera-recognize.dto'
 import { ResponseMessage } from '../../common/decorators/response-message.decorator'
 
 @ApiTags('Camera')
@@ -21,5 +22,13 @@ export class CameraController {
   @ResponseMessage('Command sent')
   sendCommand(@Body() dto: CameraCommandDto) {
     return this.cameraService.sendCommand(dto)
+  }
+
+  @ApiOperation({ summary: 'Nhận kết quả nhận diện khuôn mặt từ Python script' })
+  @Post('recognize')
+  @HttpCode(HttpStatus.CREATED)
+  @ResponseMessage('Recognition processed')
+  processRecognition(@Body() dto: CameraRecognizeDto) {
+    return this.cameraService.processRecognition(dto)
   }
 }

@@ -13,12 +13,16 @@ const camera_controller_1 = require("./controllers/camera.controller");
 const camera_service_1 = require("./services/camera.service");
 const camera_repository_1 = require("./repositories/camera.repository");
 const camera_log_schema_1 = require("./schemas/camera-log.schema");
+const devices_module_1 = require("../devices/devices.module");
 let CameraModule = class CameraModule {
 };
 exports.CameraModule = CameraModule;
 exports.CameraModule = CameraModule = __decorate([
     (0, common_1.Module)({
-        imports: [mongoose_1.MongooseModule.forFeature([{ name: camera_log_schema_1.CameraLog.name, schema: camera_log_schema_1.CameraLogSchema }])],
+        imports: [
+            mongoose_1.MongooseModule.forFeature([{ name: camera_log_schema_1.CameraLog.name, schema: camera_log_schema_1.CameraLogSchema }]),
+            devices_module_1.DevicesModule,
+        ],
         controllers: [camera_controller_1.CameraController],
         providers: [camera_service_1.CameraService, camera_repository_1.CameraRepository],
     })

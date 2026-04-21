@@ -18,6 +18,7 @@ export class DevicesRepository implements OnModuleInit {
         { name: 'Front Door Webcam',  type: 'camera', room: 'Front Door',  status: 'active', ip_address: '192.168.1.12', last_seen_at: '2026-04-08T14:30:00' },
         { name: 'Bedroom Light',      type: 'light',  room: 'Bedroom',     status: 'off',    ip_address: '192.168.1.13', last_seen_at: '2026-04-08T14:30:00' },
         { name: 'Kitchen Light',      type: 'light',  room: 'Kitchen',     status: 'on',     ip_address: '192.168.1.14', last_seen_at: '2026-04-08T14:30:00' },
+        { name: 'Front Gate',         type: 'gate',   room: 'Front Door',  status: 'closed', ip_address: '192.168.1.15', last_seen_at: '2026-04-08T14:30:00' },
       ])
     }
   }
@@ -39,5 +40,13 @@ export class DevicesRepository implements OnModuleInit {
       ip_address: dto.ip_address ?? '',
       last_seen_at: new Date().toISOString(),
     })
+  }
+
+  updateGateStatus(status: 'open' | 'closed') {
+    return this.model.findOneAndUpdate(
+      { type: 'gate' },
+      { status, last_seen_at: new Date().toISOString() },
+      { new: true },
+    )
   }
 }

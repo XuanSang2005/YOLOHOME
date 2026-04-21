@@ -21,6 +21,7 @@ exports.DevicesModule = DevicesModule = __decorate([
         imports: [mongoose_1.MongooseModule.forFeature([{ name: device_schema_1.Device.name, schema: device_schema_1.DeviceSchema }])],
         controllers: [devices_controller_1.DevicesController],
         providers: [devices_service_1.DevicesService, devices_repository_1.DevicesRepository],
+        exports: [devices_repository_1.DevicesRepository],
     })
 ], DevicesModule);
 //# sourceMappingURL=devices.module.js.map

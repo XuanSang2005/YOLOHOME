@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const camera_service_1 = require("../services/camera.service");
 const camera_command_dto_1 = require("../dto/camera-command.dto");
+const camera_recognize_dto_1 = require("../dto/camera-recognize.dto");
 const response_message_decorator_1 = require("../../common/decorators/response-message.decorator");
 let CameraController = class CameraController {
     constructor(cameraService) {
@@ -27,6 +28,9 @@ let CameraController = class CameraController {
     }
     sendCommand(dto) {
         return this.cameraService.sendCommand(dto);
+    }
+    processRecognition(dto) {
+        return this.cameraService.processRecognition(dto);
     }
 };
 exports.CameraController = CameraController;
@@ -47,6 +51,16 @@ __decorate([
     __metadata("design:paramtypes", [camera_command_dto_1.CameraCommandDto]),
     __metadata("design:returntype", void 0)
 ], CameraController.prototype, "sendCommand", null);
+__decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Nhận kết quả nhận diện khuôn mặt từ Python script' }),
+    (0, common_1.Post)('recognize'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
+    (0, response_message_decorator_1.ResponseMessage)('Recognition processed'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [camera_recognize_dto_1.CameraRecognizeDto]),
+    __metadata("design:returntype", void 0)
+], CameraController.prototype, "processRecognition", null);
 exports.CameraController = CameraController = __decorate([
     (0, swagger_1.ApiTags)('Camera'),
     (0, common_1.Controller)('camera'),

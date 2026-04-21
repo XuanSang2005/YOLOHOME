@@ -1,7 +1,7 @@
 export interface Device {
   id: string
   name: string
-  type: 'light' | 'sensor' | 'camera'
+  type: 'light' | 'sensor' | 'camera' | 'gate'
   room: string
   status: string
   ip_address: string

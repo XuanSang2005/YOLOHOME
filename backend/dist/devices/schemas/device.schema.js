@@ -19,7 +19,7 @@ __decorate([
     __metadata("design:type", String)
 ], Device.prototype, "name", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: true, enum: ['light', 'sensor', 'camera'] }),
+    (0, mongoose_1.Prop)({ required: true, enum: ['light', 'sensor', 'camera', 'gate'] }),
     __metadata("design:type", String)
 ], Device.prototype, "type", void 0);
 __decorate([
@@ -27,7 +27,7 @@ __decorate([
     __metadata("design:type", String)
 ], Device.prototype, "room", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: true, enum: ['on', 'off', 'active', 'inactive'], default: 'off' }),
+    (0, mongoose_1.Prop)({ required: true, enum: ['on', 'off', 'active', 'inactive', 'open', 'closed'], default: 'off' }),
     __metadata("design:type", String)
 ], Device.prototype, "status", void 0);
 __decorate([

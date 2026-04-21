@@ -55,4 +55,19 @@ export declare class CameraRepository implements OnModuleInit {
     } & Required<{
         _id: import("mongoose").Types.ObjectId;
     }>>;
+    createFaceLog(faceLabel: string, authorized: number): Promise<import("mongoose").Document<unknown, {}, import("mongoose").Document<unknown, {}, CameraLog, {}, import("mongoose").DefaultSchemaOptions> & CameraLog & {
+        _id: import("mongoose").Types.ObjectId;
+    } & {
+        __v: number;
+    } & {
+        id: string;
+    }, {}, import("mongoose").DefaultSchemaOptions> & import("mongoose").Document<unknown, {}, CameraLog, {}, import("mongoose").DefaultSchemaOptions> & CameraLog & {
+        _id: import("mongoose").Types.ObjectId;
+    } & {
+        __v: number;
+    } & {
+        id: string;
+    } & Required<{
+        _id: import("mongoose").Types.ObjectId;
+    }>>;
 }

@@ -46,6 +46,16 @@ let CameraRepository = class CameraRepository {
             created_at: new Date().toISOString(),
         });
     }
+    async createFaceLog(faceLabel, authorized) {
+        return this.model.create({
+            user_id: null,
+            device_id: 3,
+            event: 'face_detected',
+            face_label: faceLabel,
+            note: authorized === 1 ? `Access granted: ${faceLabel}` : 'Access denied: Unknown person',
+            created_at: new Date().toISOString(),
+        });
+    }
 };
 exports.CameraRepository = CameraRepository;
 exports.CameraRepository = CameraRepository = __decorate([

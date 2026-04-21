@@ -1,7 +1,8 @@
 export declare enum DeviceType {
     LIGHT = "light",
     SENSOR = "sensor",
-    CAMERA = "camera"
+    CAMERA = "camera",
+    GATE = "gate"
 }
 export declare enum DeviceRoom {
     LIVING_ROOM = "Living Room",

@@ -1,10 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { getCamera, getCameraLogs, sendCameraCommand } from '../../services/cameraService'
+import { getCamera, getCameraLogs, sendCameraCommand, getGate, sendRecognition } from '../../services/cameraService'
 import { formatTime24h } from '../../utils/formatTime'
 import { useState } from 'react'
 import cameraImg from '../../assets/camera.png'
 import cautionImg from '../../assets/caution-triangle.png'
-import shieldImg from '../../assets/shield.png'
 import userImg from '../../assets/user.png'
 import { InsightTile } from './InsightTile'
 import { CameraPreview } from './CameraPreview'
@@ -15,7 +14,8 @@ import { EVENT_CFG } from './EventConfig'
 export function CameraPage() {
   const queryClient = useQueryClient()
   const camera = useQuery({ queryKey: ['camera'], queryFn: getCamera })
-  const logs = useQuery({ queryKey: ['cameraLogs'], queryFn: getCameraLogs })
+  const gate   = useQuery({ queryKey: ['gate'],   queryFn: getGate, refetchInterval: 2000 })
+  const logs   = useQuery({ queryKey: ['cameraLogs'], queryFn: getCameraLogs, refetchInterval: 3000 })
   const [showAll, setShowAll] = useState(false)
 
   const mutation = useMutation({
@@ -26,7 +26,17 @@ export function CameraPage() {
     },
   })
 
+  const recognizeMutation = useMutation({
+    mutationFn: ({ authorized, label }: { authorized: 0 | 1; label: string }) =>
+      sendRecognition(authorized, label),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['gate'] })
+      queryClient.invalidateQueries({ queryKey: ['cameraLogs'] })
+    },
+  })
+
   const isActive    = camera.data?.status === 'active'
+  const gateOpen    = gate.data?.status === 'open'
   const displayLogs = showAll ? logs.data : logs.data?.slice(0, 6)
   const faceCount   = logs.data?.filter((l) => l.event === 'face_detected').length ?? 0
   const lastFace    = logs.data?.find((l) => l.event === 'face_detected')
@@ -51,7 +61,12 @@ export function CameraPage() {
 
       {/* Hero */}
       <div className="animate-float-up" style={{ animationDelay: '60ms' }}>
-        <CameraPreview isActive={isActive} name={camera.data?.name} room={camera.data?.room} />
+        <CameraPreview
+          isActive={isActive}
+          name={camera.data?.name}
+          room={camera.data?.room}
+          onRecognize={(authorized, label) => recognizeMutation.mutate({ authorized, label })}
+        />
       </div>
 
       {/* 4 Insight Tiles */}
@@ -71,11 +86,17 @@ export function CameraPage() {
           sub={unknownCount > 0 ? 'Review activity log' : 'No alerts'}
         />
         <InsightTile
-          icon={<img src={shieldImg} className="w-5 h-5 object-contain" style={{ filter: 'brightness(0) saturate(100%) invert(59%) sepia(64%) saturate(400%) hue-rotate(120deg)' }} />}
-          iconBg="rgba(16,185,129,0.10)"
-          label="Motion Detect"
-          value="Active"
-          sub="Monitoring entrance"
+          icon={
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={gateOpen ? '#10b981' : '#78716c'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              {gateOpen
+                ? <><path d="M18 6L6 18"/><path d="M6 6l12 12"/></>
+                : <><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></>}
+            </svg>
+          }
+          iconBg={gateOpen ? 'rgba(16,185,129,0.12)' : 'rgba(120,113,108,0.10)'}
+          label="Front Gate"
+          value={gateOpen ? 'Open' : 'Closed'}
+          sub={gateOpen ? 'Auto-close in 5s' : 'Locked'}
         />
         <InsightTile
           icon={<img src={cameraImg} className="w-5 h-5 object-contain" style={{ filter: isActive ? 'brightness(0) saturate(100%) invert(59%) sepia(64%) saturate(400%) hue-rotate(120deg)' : 'brightness(0) saturate(100%) invert(71%) sepia(10%) saturate(300%) hue-rotate(345deg)' }} />}

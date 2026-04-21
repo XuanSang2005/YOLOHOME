@@ -12,9 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CameraService = void 0;
 const common_1 = require("@nestjs/common");
 const camera_repository_1 = require("../repositories/camera.repository");
+const devices_repository_1 = require("../../devices/repositories/devices.repository");
 let CameraService = class CameraService {
-    constructor(repository) {
+    constructor(repository, devicesRepository) {
         this.repository = repository;
+        this.devicesRepository = devicesRepository;
     }
     getLogs() {
         return this.repository.findAll();
@@ -22,10 +24,21 @@ let CameraService = class CameraService {
     sendCommand(dto) {
         return this.repository.createLog(dto.command);
     }
+    async processRecognition(dto) {
+        await this.repository.createFaceLog(dto.face_label, dto.authorized);
+        if (dto.authorized === 1) {
+            await this.devicesRepository.updateGateStatus('open');
+            setTimeout(() => {
+                this.devicesRepository.updateGateStatus('closed').catch(() => { });
+            }, 5000);
+        }
+        return { authorized: dto.authorized, face_label: dto.face_label };
+    }
 };
 exports.CameraService = CameraService;
 exports.CameraService = CameraService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [camera_repository_1.CameraRepository])
+    __metadata("design:paramtypes", [camera_repository_1.CameraRepository,
+        devices_repository_1.DevicesRepository])
 ], CameraService);
 //# sourceMappingURL=camera.service.js.map
