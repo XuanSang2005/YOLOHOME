@@ -15,10 +15,11 @@ from aiot_rgbled import RGBLed
 aiot_lcd1602 = LCD1602()
 event_manager.reset()
 
-i2c = SoftI2C(scl=Pin(22), sda=Pin(21))
-aiot_dht20 = DHT20(i2c)
-
 tiny_rgb = RGBLed(pin0.pin, 4)
+
+from aiot_dht20 import DHT20
+aiot_dht20 = DHT20()
+print("DHT20 OK")
 
 def on_event_timer_callback_sensor():
   global RT, RH, LUX
@@ -91,7 +92,7 @@ def on_event_timer_callback_time():
 event_manager.add_timer_event(1000, on_event_timer_callback_time)
 
 display.scroll('YH')
-mqtt.connect_wifi('iPhone', 'anh12345')
+mqtt.connect_wifi('PHIỀN VL', '22222222')
 mqtt.connect_broker(server='mqtt.ohstem.vn', port=1883, username='YoloHome2907', password='')
 
 try:
