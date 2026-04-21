@@ -1,0 +1,31 @@
+from yolobit import *
+from aiot_lcd1602 import LCD1602
+from aiot_dht20 import DHT20
+import time
+
+# 1. Khởi tạo thiết bị
+lcd1602 = LCD1602()
+aiot_dht20 = DHT20()
+
+# 2. Hiển thị chữ chào mừng lúc mới bật
+lcd1602.clear()
+lcd1602.move_to(0, 0)
+lcd1602.putstr("YoloHome Ready!")
+time.sleep(2)
+lcd1602.clear()
+
+# 3. Vòng lặp chính
+while True:
+    # Đọc cảm biến
+    aiot_dht20.read()
+    nhiet_do = aiot_dht20.temperature
+    
+    # In ra màn hình LCD (Ví dụ: Temp: 32.5 C)
+    lcd1602.move_to(0, 0)
+    lcd1602.putstr("Temp: " + str(nhiet_do) + " C")
+    
+    # QUAN TRỌNG NHẤT: Đẩy con số ra cáp USB để máy tính chộp lấy
+    print(nhiet_do)
+    
+    # Nghỉ 3 giây trước khi đo lần tiếp theo
+    time.sleep(3)
