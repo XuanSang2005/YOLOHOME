@@ -93,13 +93,21 @@ export function CameraPreview({
         ? new faceapi.FaceMatcher(labeledRef.current, 0.5)
         : null
 
+      // Tổng hợp kết quả toàn bộ scan: 1 nếu có bất kỳ khuôn mặt được nhận ra
+      let scanAuthorized: 0 | 1 = 0
+      let scanLabel = 'unknown'
+
       for (const det of resized) {
         const { x, y, width, height } = det.detection.box
-        const match      = matcher?.findBestMatch(det.descriptor)
-        const isKnown    = match ? match.label !== 'unknown' : false
-        const label      = isKnown ? match!.label : 'Unknown'
-        const authorized: 0 | 1 = isKnown ? 1 : 0
-        const color      = isKnown ? '#10b981' : '#ef4444'
+        const match   = matcher?.findBestMatch(det.descriptor)
+        const isKnown = match ? match.label !== 'unknown' : false
+        const label   = isKnown ? match!.label : 'Unknown'
+        const color   = isKnown ? '#10b981' : '#ef4444'
+
+        if (isKnown) {
+          scanAuthorized = 1
+          scanLabel      = match!.label
+        }
 
         ctx.strokeStyle = color
         ctx.lineWidth   = 2
@@ -109,10 +117,11 @@ export function CameraPreview({
         ctx.fillStyle = '#fff'
         ctx.font = 'bold 13px ui-monospace, monospace'
         ctx.fillText(label, x + 6, y - 8)
-
-        onRecognizeRef.current?.(authorized, label)
       }
-    }, 3000)
+
+      // Cập nhật biến authorized sau mỗi lần quét (liên tục, dù có mặt hay không)
+      onRecognizeRef.current?.(scanAuthorized, scanLabel)
+    }, 5000)
 
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current)
