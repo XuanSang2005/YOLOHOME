@@ -19,10 +19,15 @@ export function sendCameraCommand(command: 'on' | 'off'): Promise<void> {
   return apiClient.post<void>('/camera/commands', { command })
 }
 
-export function sendRecognition(authorized: 0 | 1, faceLabel: string): Promise<void> {
-  return apiClient.post<void>('/camera/recognize', {
-    authorized,
-    face_label: faceLabel,
-    device_id: 3,
-  })
+export const sendRecognition = async (authorized: 0 | 1, label: string) => {
+  const response = await fetch('/camera/recognize', { // Nhớ sửa lại link này cho giống các hàm trên nếu cần
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      authorized: authorized,
+      face_label: label,
+      device_id: 1
+    })
+  });
+  return response.json();
 }
